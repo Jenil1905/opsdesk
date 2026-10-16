@@ -119,7 +119,7 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_FRONTEND }}:${{ github.sha }}
 
-      # DevSecOps: Trivy Security Vulnerability Scan on Frontend
+      # DevSecOps: Trivy Scan Frontend Image (DevSecOps)
       - name: Trivy Scan Frontend Image (DevSecOps)
         uses: aquasecurity/trivy-action@master
         with:
@@ -144,3 +144,37 @@ jobs:
           docker push ${{ env.IMAGE_FRONTEND }}:${{ github.sha }}
           docker tag ${{ env.IMAGE_FRONTEND }}:${{ github.sha }} ${{ env.IMAGE_FRONTEND }}:latest
           docker push ${{ env.IMAGE_FRONTEND }}:latest
+
+  # ==========================================
+  # Quality Gate 3: Kubernetes & Helm Deploy
+  # ==========================================
+  k8s-helm-deployment:
+    name: Kubernetes & Helm Deployment Verification
+    needs: [docker-build-scan-push]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create KinD Cluster
+        uses: helm/kind-action@v1.12.0
+        with:
+          cluster_name: opsdesk-ci
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Create Namespace
+        run: kubectl apply -f k8s/namespace.yaml
+
+      - name: Deploy OpsDesk Helm Chart
+        run: |
+          helm upgrade --install opsdesk ./helm/opsdesk/ \
+            --namespace opsdesk \
+            --set postgresql.persistence.size=1Gi \
+            --set ingress.enabled=false
+
+      - name: Verify Kubernetes Workloads & Services
+        run: |
+          kubectl get all -n opsdesk
+          helm list -n opsdesk

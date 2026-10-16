@@ -48,6 +48,11 @@ Full-Stack Observability
   └── Grafana Dashboard (Throughput, P99 Latency, 5xx Error Rates, CPU)
 ```
 
+### Automated End-to-End CI/CD Pipeline
+OpsDesk features a 5-stage automated pipeline spanning testing, UI compilation, Terraform IaC validation, DevSecOps vulnerability scans, container image publishing to GHCR, and automated Kubernetes KinD verification:
+
+![OpsDesk CI/CD Pipeline](docs/screenshots/github_actions_full_pipeline.png)
+
 ---
 
 ## 2. Visual Demonstration
@@ -144,19 +149,56 @@ pytest -v
 
 ## 7. Terraform Infrastructure Provisioning (AWS)
 
-![Terraform Plan](docs/screenshots/m7_terraform_plan.png)
+OpsDesk provides production-grade Infrastructure-as-Code (IaC) using Terraform to provision an enterprise AWS VPC, subnets across multiple availability zones, internet gateway, route tables, IAM security roles, and an AWS EKS Kubernetes cluster.
+
+### Prerequisites & AWS Configuration
+> [!IMPORTANT]
+> To execute Terraform against AWS, each user must configure their own AWS credentials. Never commit credentials to version control.
+
+1. **Install Tools**:
+   - AWS CLI v2 (`aws --version`)
+   - Terraform >= 1.5.0 (`terraform --version`)
+
+2. **Configure Your Personal AWS Credentials**:
+   ```bash
+   aws configure
+   # AWS Access Key ID: <YOUR_AWS_ACCESS_KEY>
+   # AWS Secret Access Key: <YOUR_AWS_SECRET_KEY>
+   # Default region name: us-east-1
+   # Default output format: json
+   ```
+
+3. **Verify AWS Connection**:
+   ```bash
+   aws sts get-caller-identity
+   ```
+
+### Execution Workflow
 
 ```bash
 cd terraform
-terraform init
-terraform plan
-terraform apply -auto-approve
-```
 
-To clean up resources and prevent AWS charges:
-```bash
+# 1. Initialize Terraform Providers
+terraform init
+
+# 2. Review Planned Cloud Resources (Dry Run)
+terraform plan
+
+# 3. Apply Infrastructure to AWS (Optional)
+terraform apply -auto-approve
+
+# 4. Tear Down to Avoid Any Cloud Charges
 terraform destroy -auto-approve
 ```
+
+### Live AWS EKS Production Cluster
+![AWS EKS Cluster Active](docs/screenshots/aws_eks_cluster_active.png)
+
+### Live AWS VPC & Multi-AZ Subnet Architecture
+![AWS VPC Networking](docs/screenshots/aws_vpc_networking.png)
+
+### Verified Terraform Plan Execution
+![Terraform Plan](docs/screenshots/m7_terraform_plan.png)
 
 ---
 

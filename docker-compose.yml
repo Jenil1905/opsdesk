@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -54,6 +52,39 @@ services:
     depends_on:
       backend:
         condition: service_healthy
+    networks:
+      - opsdesk-network
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    container_name: opsdesk-prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - opsdesk-network
+
+  grafana:
+    image: grafana/grafana:12.1.1
+    container_name: opsdesk-grafana
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - prometheus
     networks:
       - opsdesk-network
 

@@ -1,0 +1,82 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "title": "OpsDesk API Request Throughput (req/s)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(http_requests_total{app=\"opsdesk-backend\"}[1m])) by (handler, status)",
+          "legendFormat": "{{handler}} - HTTP {{status}}",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "title": "P99 API Request Latency (seconds)",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{app=\"opsdesk-backend\"}[5m])) by (le))",
+          "legendFormat": "P99 Latency",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 3,
+      "title": "HTTP 5xx Error Rate",
+      "type": "stat",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(rate(http_requests_total{app=\"opsdesk-backend\",status=~\"5..\"}[5m])) or vector(0)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "title": "Container CPU & Memory Utilization",
+      "type": "timeseries",
+      "targets": [
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sum(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{container=\"backend\"})",
+          "legendFormat": "Backend CPU Usage",
+          "refId": "A"
+        }
+      ]
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["opsdesk", "devops", "sre"],
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "title": "OpsDesk SRE Observability & Performance Dashboard",
+  "version": 1
+}

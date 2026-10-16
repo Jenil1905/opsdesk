@@ -1,0 +1,27 @@
+global:
+  environment: local-minikube
+  namespace: opsdesk
+
+backend:
+  replicaCount: 2
+  image:
+    repository: devops-project-backend
+    pullPolicy: Never
+    tag: "latest"
+
+frontend:
+  replicaCount: 2
+  image:
+    repository: devops-project-frontend
+    pullPolicy: Never
+    tag: "latest"
+
+postgresql:
+  enabled: true
+  image:
+    repository: postgres
+    tag: "16-alpine"
+    pullPolicy: Never
+
+ingress:
+  enabled: false # Minikube uses port-forward or NodePort/tunnel

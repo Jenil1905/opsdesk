@@ -105,11 +105,13 @@ Accessible live at `http://localhost:8000/docs` or via Nginx reverse proxy.
 - Node.js 20+ (optional for local frontend development)
 
 ### Launching with Docker Compose
-To build and start the entire stack (PostgreSQL, FastAPI Backend, React Frontend):
+To build and start the entire stack (PostgreSQL, FastAPI Backend, React Frontend, Prometheus, Grafana):
 
 ```bash
 docker compose up --build -d
 ```
+
+![Docker Compose Status](docs/screenshots/m4_docker_compose.png)
 
 Access the interfaces:
 - **Frontend Application:** `http://localhost:3000`
@@ -117,6 +119,7 @@ Access the interfaces:
 - **Liveness Health Check:** `http://localhost:8000/health`
 - **Readiness Database Check:** `http://localhost:8000/ready`
 - **Prometheus Telemetry:** `http://localhost:8000/metrics`
+- **Grafana SRE Dashboard:** `http://localhost:3001`
 
 To stop and remove containers:
 ```bash
@@ -135,23 +138,13 @@ source .venv/bin/activate
 pytest -v
 ```
 
-### Pytest Results (100% Passing)
-```text
-backend/tests/test_tickets.py::test_health_check PASSED                  [ 11%]
-backend/tests/test_tickets.py::test_ready_check PASSED                   [ 22%]
-backend/tests/test_tickets.py::test_create_ticket PASSED                 [ 33%]
-backend/tests/test_tickets.py::test_get_tickets_list PASSED              [ 44%]
-backend/tests/test_tickets.py::test_get_single_ticket_and_not_found PASSED [ 55%]
-backend/tests/test_tickets.py::test_update_ticket PASSED                 [ 66%]
-backend/tests/test_tickets.py::test_delete_ticket PASSED                 [ 77%]
-backend/tests/test_tickets.py::test_get_ticket_stats PASSED              [ 88%]
-backend/tests/test_tickets.py::test_metrics_endpoint PASSED              [100%]
-======================== 9 passed in 0.10s =========================
-```
+![Pytest Test Results](docs/screenshots/m2_pytest_terminal.png)
 
 ---
 
 ## 7. Terraform Infrastructure Provisioning (AWS)
+
+![Terraform Plan](docs/screenshots/m7_terraform_plan.png)
 
 ```bash
 cd terraform
@@ -185,3 +178,17 @@ kubectl get pods -n opsdesk
 kubectl get svc -n opsdesk
 kubectl get ingress -n opsdesk
 ```
+
+![Kubernetes Pods & Helm](docs/screenshots/m8_kubernetes_pods.png)
+
+---
+
+## 9. Observability & Monitoring
+
+OpsDesk includes automated SRE telemetry with Prometheus scraping and Grafana dashboards:
+
+- **Metrics Telemetry:** `/metrics` endpoint exposes Prometheus counters, histograms, and gauges.
+- **SRE Dashboard:** Visualizes incident burn rate, MTTR, HTTP error rates, and CPU utilization.
+
+![Grafana SRE Dashboard](docs/screenshots/grafana_dashboard.png)
+![Prometheus Metrics Telemetry](docs/screenshots/m9_metrics_curl.png)

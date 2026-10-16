@@ -191,13 +191,24 @@ terraform apply -auto-approve
 terraform destroy -auto-approve
 ```
 
-### Live AWS EKS Production Cluster
+### Live AWS Infrastructure Console Evidence
+
+#### 1. AWS EKS Production Kubernetes Cluster (`Active`)
 ![AWS EKS Cluster Active](docs/screenshots/aws_eks_cluster_active.png)
 
-### Live AWS VPC & Multi-AZ Subnet Architecture
-![AWS VPC Networking](docs/screenshots/aws_vpc_networking.png)
+#### 2. AWS EKS Cluster Overview & Platform Version
+![AWS EKS Cluster Overview](docs/screenshots/aws_eks_cluster_overview.png)
 
-### Verified Terraform Plan Execution
+#### 3. AWS Custom Production VPC (`10.0.0.0/16`)
+![AWS VPC Production](docs/screenshots/aws_vpc_production.png)
+
+#### 4. AWS Multi-AZ Subnets (Public & Private across `us-east-1a` and `us-east-1b`)
+![AWS Subnets](docs/screenshots/aws_subnets_production.png)
+
+#### 5. AWS Internet Gateway (`opsdesk-igw-production`)
+![AWS Internet Gateway](docs/screenshots/aws_internet_gateway.png)
+
+#### 6. Verified Terraform Plan Execution
 ![Terraform Plan](docs/screenshots/m7_terraform_plan.png)
 
 ---

@@ -57,12 +57,33 @@ jobs:
           npm ci || npm install
           npm run build
 
+  terraform-validate:
+    name: Terraform IaC Lint & Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.5
+
+      - name: Terraform Format Check
+        run: terraform fmt -check terraform/
+
+      - name: Terraform Init
+        run: cd terraform && terraform init -backend=false
+
+      - name: Terraform Validate
+        run: cd terraform && terraform validate
+
   # ==========================================
   # Quality Gate 2: Docker Builds & DevSecOps
   # ==========================================
   docker-build-scan-push:
     name: Docker Image Build, Trivy Scan & GHCR Push
-    needs: [backend-test, frontend-build]
+    needs: [backend-test, frontend-build, terraform-validate]
     runs-on: ubuntu-latest
     permissions:
       contents: read

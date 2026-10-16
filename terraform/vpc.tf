@@ -5,7 +5,7 @@ resource "aws_vpc" "opsdesk_vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name = "opsdesk-vpc-${var.environment}"
+    Name                                        = "opsdesk-vpc-${var.environment}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }

@@ -82,6 +82,7 @@ resource "aws_eks_node_group" "opsdesk_nodes" {
   node_role_arn   = aws_iam_role.eks_nodes_role.arn
   subnet_ids      = aws_subnet.public[*].id
   instance_types  = var.node_instance_types
+  ami_type        = "AL2023_x86_64_STANDARD"
 
   scaling_config {
     desired_size = var.desired_nodes

@@ -61,7 +61,7 @@ jobs:
   # Quality Gate 2: Docker Builds & DevSecOps
   # ==========================================
   docker-build-scan-push:
-    name: Build, Trivy Security Scan, and Push to GHCR
+    name: Docker Image Build, Trivy Scan & GHCR Push
     needs: [backend-test, frontend-build]
     runs-on: ubuntu-latest
     permissions:

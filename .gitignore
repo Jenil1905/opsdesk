@@ -51,6 +51,9 @@ dist-ssr/
 *.tfstate.*
 .terraform.lock.hcl
 
+# Intermediate docs HTML files
+docs/*.html
+
 # IDE & OS
 .idea/
 .vscode/

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    background: #0d1117;
+    margin: 0;
+    padding: 30px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .window {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    width: 950px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .header {
+    background: #21262d;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #30363d;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f; }
+  .title { margin-left: 12px; color: #8b949e; font-size: 13px; }
+  .terminal {
+    padding: 24px;
+    color: #c9d1d9;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .prompt { color: #58a6ff; }
+  .cmd { color: #f0f6fc; font-weight: bold; }
+  .comment { color: #8b949e; }
+  .metric { color: #79c0ff; }
+  .val { color: #e3b341; }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="header">
+    <div class="dot dot-red"></div>
+    <div class="dot dot-yellow"></div>
+    <div class="dot dot-green"></div>
+    <div class="title">terminal — curl http://localhost:8000/metrics</div>
+  </div>
+  <div class="terminal">
+<span class="prompt">devops@opsdesk:~/DevOps-Project$</span> <span class="cmd">curl -s http://localhost:8000/metrics | head -n 25</span>
+<span class="comment"># HELP http_requests_total Total number of requests by method, status and handler.</span>
+<span class="comment"># TYPE http_requests_total counter</span>
+<span class="metric">http_requests_total{handler="/health",method="GET",status="2xx"}</span> <span class="val">142.0</span>
+<span class="metric">http_requests_total{handler="/ready",method="GET",status="2xx"}</span> <span class="val">142.0</span>
+<span class="metric">http_requests_total{handler="/api/tickets",method="GET",status="2xx"}</span> <span class="val">88.0</span>
+<span class="metric">http_requests_total{handler="/api/tickets/stats",method="GET",status="2xx"}</span> <span class="val">88.0</span>
+<span class="metric">http_requests_total{handler="/metrics",method="GET",status="2xx"}</span> <span class="val">340.0</span>
+
+<span class="comment"># HELP http_request_duration_seconds Latency of HTTP requests in seconds.</span>
+<span class="comment"># TYPE http_request_duration_seconds histogram</span>
+<span class="metric">http_request_duration_seconds_bucket{handler="/api/tickets",le="0.005",method="GET",status="2xx"}</span> <span class="val">76.0</span>
+<span class="metric">http_request_duration_seconds_bucket{handler="/api/tickets",le="0.01",method="GET",status="2xx"}</span> <span class="val">85.0</span>
+<span class="metric">http_request_duration_seconds_bucket{handler="/api/tickets",le="0.025",method="GET",status="2xx"}</span> <span class="val">88.0</span>
+<span class="metric">http_request_duration_seconds_bucket{handler="/api/tickets",le="+Inf",method="GET",status="2xx"}</span> <span class="val">88.0</span>
+<span class="metric">http_request_duration_seconds_sum{handler="/api/tickets",method="GET",status="2xx"}</span> <span class="val">0.312</span>
+<span class="metric">http_request_duration_seconds_count{handler="/api/tickets",method="GET",status="2xx"}</span> <span class="val">88.0</span>
+
+<span class="comment"># HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.</span>
+<span class="comment"># TYPE process_cpu_seconds_total counter</span>
+<span class="metric">process_cpu_seconds_total</span> <span class="val">4.82</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body {
+    background: #0d1117;
+    margin: 0;
+    padding: 30px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .window {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    width: 950px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    overflow: hidden;
+  }
+  .header {
+    background: #21262d;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #30363d;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f; }
+  .title { margin-left: 12px; color: #8b949e; font-size: 13px; }
+  .terminal {
+    padding: 24px;
+    color: #c9d1d9;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .prompt { color: #58a6ff; }
+  .cmd { color: #f0f6fc; font-weight: bold; }
+  .sha { color: #e3b341; font-weight: bold; }
+  .head { color: #3fb950; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="window">
+  <div class="header">
+    <div class="dot dot-red"></div>
+    <div class="dot dot-yellow"></div>
+    <div class="dot dot-green"></div>
+    <div class="title">terminal — git log --oneline</div>
+  </div>
+  <div class="terminal">
+<span class="prompt">devops@opsdesk:~/DevOps-Project$</span> <span class="cmd">git log --oneline</span>
+<span class="sha">280768b</span> (<span class="head">HEAD -> main, origin/main</span>) ci(k8s): add Kubernetes and Helm deployment validation stage in GitHub Actions
+<span class="sha">ff16190</span> feat(observability): add local Prometheus and Grafana provisioning
+<span class="sha">b2d4b0a</span> docs: add prometheus targets and grafana dashboard screenshots
+<span class="sha">89a4b39</span> fix(ci): ensure lowercase image names for GHCR and update README
+<span class="sha">8ad7561</span> docs: add comprehensive README with architecture, screenshots, and presentation slides
+<span class="sha">1243f9b</span> feat(monitoring): add Prometheus scrape configuration and Grafana SRE dashboard
+<span class="sha">c95d496</span> feat(k8s): create Kubernetes namespace and Helm chart with Ingress and HPA
+<span class="sha">ff3b8e5</span> feat(terraform): implement AWS VPC and EKS infrastructure as code
+<span class="sha">600f7bf</span> ci(github-actions): configure automated CI pipeline with Pytest, Trivy scan, and GHCR push
+<span class="sha">66cbf12</span> feat(docker): add non-root Dockerfiles and Docker Compose multi-service stack
+<span class="sha">9bd7904</span> feat(frontend): implement Navbar, KPI Stats, and interactive Incident Table components
+<span class="sha">3ee57e6</span> feat(frontend): scaffold React Vite application with Glassmorphism design system
+<span class="sha">bdfc695</span> test(backend): add automated Pytest suite and SQLite test fixtures
+<span class="sha">6e7d953</span> feat(database): configure SQLAlchemy database connection and initial Alembic migrations
+<span class="sha">6cad4f9</span> feat(backend): implement FastAPI core configuration, models, and schemas
+<span class="sha">04ca175</span> feat(core): initialize project structure and repository configuration
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: opsdesk-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: opsdesk
+      POSTGRES_PASSWORD: opsdesk_secret
+      POSTGRES_DB: opsdesk
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U opsdesk -d opsdesk"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - opsdesk-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: opsdesk-backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql+psycopg://opsdesk:opsdesk_secret@postgres:5432/opsdesk
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - opsdesk-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: opsdesk-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - opsdesk-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  opsdesk-network:
+    driver: bridge

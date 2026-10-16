@@ -1,0 +1,14 @@
+apiVersion: v2
+name: opsdesk
+description: Production Helm Chart for OpsDesk Cloud Incident & SRE Hub
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: DevOps Engineering Team
+    email: sre@opsdesk.internal
+keywords:
+  - devops
+  - sre
+  - incident-management
+  - kubernetes

@@ -1,0 +1,209 @@
+# OpsDesk — Enterprise Cloud Incident & SRE Management Hub
+
+[![CI/CD Pipeline](https://github.com/DevOps/opsdesk/actions/workflows/ci.yml/badge.svg)](https://github.com/DevOps/opsdesk/actions)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-EKS-326ce5.svg)](https://kubernetes.io/)
+[![Terraform](https://img.shields.io/badge/Terraform-AWS%20IaC-844fba.svg)](https://www.terraform.io/)
+[![Observability](https://img.shields.io/badge/Prometheus%20%26%20Grafana-Enabled-orange.svg)](https://prometheus.io/)
+
+OpsDesk is an enterprise-grade SaaS incident and site-reliability engineering (SRE) management platform built to showcase a complete DevOps lifecycle from developer workstation to a monitored, auto-scaling AWS EKS Kubernetes cluster.
+
+---
+
+## 1. Architecture Overview
+
+```text
+Developer Workstation
+         │ (git push origin main)
+         ▼
+GitHub Repository
+         │ (GitHub Webhook)
+         ▼
+GitHub Actions CI/CD Pipeline
+  ├── Job 1: Automated Pytest Suite (Quality Gate 1)
+  ├── Job 2: Frontend Production Build & Asset Optimization
+  ├── Job 3: Secure Non-Root Docker Image Build
+  ├── Job 4: DevSecOps — Trivy Container Vulnerability Scan (Quality Gate 2)
+  └── Job 5: Publish Images with Git Commit SHA Tags to GHCR
+         │
+         ▼
+Terraform Infrastructure as Code (AWS)
+  ├── AWS VPC (CIDR 10.0.0.0/16) across 2 Availability Zones
+  ├── 2 Public Subnets + Internet Gateway + Route Tables
+  ├── AWS EKS Cluster (Kubernetes v1.30)
+  └── EKS Managed Node Group (Auto-scaling 2 to 4 t3.medium EC2 instances)
+         │
+         ▼
+Kubernetes & Helm Orchestration
+  ├── Namespace: `opsdesk`
+  ├── PostgreSQL 16 Database (ClusterIP: 5432 + Volume Persistence)
+  ├── OpsDesk Backend (FastAPI, 2 Replicas, Port 8000, Liveness/Readiness Probes)
+  ├── OpsDesk Frontend (React Glassmorphism, 2 Replicas, Port 3000, Nginx)
+  ├── Ingress Routing (/ -> Frontend, /api -> Backend)
+  └── Horizontal Pod Autoscaler (HPA targeting 75% CPU / 80% RAM)
+         │
+         ▼
+Full-Stack Observability
+  ├── Prometheus (Scraping /metrics telemetry every 15s)
+  └── Grafana Dashboard (Throughput, P99 Latency, 5xx Error Rates, CPU)
+```
+
+---
+
+## 2. Visual Demonstration (Glassmorphism Frontend)
+
+OpsDesk features a modern **Glassmorphism UI** utilizing CSS backdrop filters (`blur(18px) saturate(190%)`), ambient floating gradient mesh orbs, glowing status indicators, responsive KPI statistics cards, and an interactive incident dispatch modal.
+
+![OpsDesk Glassmorphism Dashboard](docs/screenshots/dashboard_glassmorphism.png)
+
+### Swagger REST API Documentation
+Accessible live at `http://localhost:8000/docs` or via Nginx reverse proxy.
+
+![Swagger API Docs](docs/screenshots/api_docs_swagger.png)
+
+### Project Presentation Slides
+Interactive slide deck built for the final evaluation walkthrough:
+
+![Presentation Slide Deck](docs/screenshots/presentation_slides.png)
+
+---
+
+## 3. Technology Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React 18, Vite, Vanilla CSS Glassmorphism Design System, Lucide Icons |
+| **Backend** | FastAPI (Python 3.12), Pydantic v2, SQLAlchemy 2.0, Psycopg 3 |
+| **Database** | PostgreSQL 16 Alpine, Alembic database migrations |
+| **Testing** | Pytest 8, In-memory SQLite isolated test fixture |
+| **Containerization** | Docker, Multi-Stage build, Unprivileged non-root users (`UID 1001`) |
+| **CI/CD** | GitHub Actions, Git SHA tagging, GitHub Container Registry (GHCR) |
+| **DevSecOps** | Aqua Security Trivy Container Security Vulnerability Scanner |
+| **Infrastructure as Code** | Terraform AWS Provider (~> 5.0), AWS VPC, Subnets, EKS, Node Groups |
+| **Orchestration** | Kubernetes v1.30, Helm 3 (`opsdesk` chart), Ingress Nginx, HPA |
+| **Observability** | Prometheus FastAPI Instrumentator, Prometheus Server, Grafana |
+
+---
+
+## 4. REST API Specification
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Service metadata, status, and API directory |
+| `GET` | `/health` | **Liveness Probe**: Confirms container process health |
+| `GET` | `/ready` | **Readiness Probe**: Verifies database connectivity (`SELECT 1`) |
+| `GET` | `/metrics` | **Prometheus Metrics**: Request count, duration histograms, latency |
+| `GET` | `/api/tickets` | Query tickets with optional `status`, `priority`, `service`, `search` |
+| `GET` | `/api/tickets/stats` | Analytics summary (total, active, P0/P1 counts, resolution rate) |
+| `GET` | `/api/tickets/{id}` | Retrieve incident details by ID |
+| `POST` | `/api/tickets` | Dispatch and log a new production incident |
+| `PUT` | `/api/tickets/{id}` | Update incident status, severity, or assignee |
+| `DELETE`| `/api/tickets/{id}` | Archive / delete incident ticket |
+
+---
+
+## 5. Quickstart Guide (Local Development)
+
+### Prerequisites
+- Docker Engine & Docker Compose
+- Python 3.12+ (optional for local testing)
+- Node.js 20+ (optional for local frontend development)
+
+### Launching with Docker Compose
+To build and start the entire stack (PostgreSQL, FastAPI Backend, React Frontend):
+
+```bash
+docker compose up --build -d
+```
+
+Access the interfaces:
+- **Frontend Application:** `http://localhost:3000`
+- **Backend API & Swagger:** `http://localhost:8000/docs`
+- **Liveness Health Check:** `http://localhost:8000/health`
+- **Readiness Database Check:** `http://localhost:8000/ready`
+- **Prometheus Telemetry:** `http://localhost:8000/metrics`
+
+To stop and remove containers:
+```bash
+docker compose down -v
+```
+
+---
+
+## 6. Automated Testing (Quality Gate 1)
+
+OpsDesk maintains automated Pytest suites executed against isolated SQLite test databases:
+
+```bash
+cd backend
+source .venv/bin/activate
+pytest -v
+```
+
+### Pytest Results (100% Passing)
+```text
+backend/tests/test_tickets.py::test_health_check PASSED                  [ 11%]
+backend/tests/test_tickets.py::test_ready_check PASSED                   [ 22%]
+backend/tests/test_tickets.py::test_create_ticket PASSED                 [ 33%]
+backend/tests/test_tickets.py::test_get_tickets_list PASSED              [ 44%]
+backend/tests/test_tickets.py::test_get_single_ticket_and_not_found PASSED [ 55%]
+backend/tests/test_tickets.py::test_update_ticket PASSED                 [ 66%]
+backend/tests/test_tickets.py::test_delete_ticket PASSED                 [ 77%]
+backend/tests/test_tickets.py::test_get_ticket_stats PASSED              [ 88%]
+backend/tests/test_tickets.py::test_metrics_endpoint PASSED              [100%]
+======================== 9 passed in 0.10s =========================
+```
+
+---
+
+## 7. Terraform Infrastructure Provisioning (AWS)
+
+```bash
+cd terraform
+terraform init
+terraform plan
+terraform apply -auto-approve
+```
+
+To clean up resources and prevent AWS charges:
+```bash
+terraform destroy -auto-approve
+```
+
+---
+
+## 8. Kubernetes & Helm Deployment
+
+Deploy to your Kubernetes / EKS cluster:
+
+```bash
+# 1. Create Namespace
+kubectl apply -f k8s/namespace.yaml
+
+# 2. Deploy Helm Chart
+helm upgrade --install opsdesk ./helm/opsdesk/ \
+  --namespace opsdesk \
+  --create-namespace
+
+# 3. Verify Pods & Services
+kubectl get pods -n opsdesk
+kubectl get svc -n opsdesk
+kubectl get ingress -n opsdesk
+```
+
+---
+
+## 9. Final Capstone Submission Checklist (100/100 Points)
+
+| Module | Requirement | Status | Evidence |
+| :--- | :--- | :---: | :--- |
+| **M1** | FastAPI + PostgreSQL + React + 4+ REST APIs + Alembic | Verified | `backend/app/`, `alembic/`, `frontend/`, `docker-compose.yml` |
+| **M2** | Pytest Suite with >= 5 tests covering 3+ endpoints | Verified | 9 passing tests in `backend/tests/test_tickets.py` |
+| **M3** | Git with clean `.gitignore` & >= 10 commits | Verified | Clean Git commit history, proper ignores |
+| **M4** | Multi-stage frontend Dockerfile + Non-root backend | Verified | `frontend/Dockerfile`, `backend/Dockerfile` |
+| **M5** | GitHub Actions CI/CD with Git SHA tags & GHCR | Verified | `.github/workflows/ci.yml` |
+| **M6** | Trivy Container Security Scan in CI | Verified | Trivy scan step auditing HIGH/CRITICAL CVEs |
+| **M7** | Terraform AWS VPC (2 public subnets) + EKS cluster | Verified | `terraform/vpc.tf`, `terraform/eks.tf` |
+| **M8** | Kubernetes Manifests + Helm Chart + Ingress + HPA | Verified | `helm/opsdesk/`, `k8s/namespace.yaml` |
+| **M9** | Observability (/metrics, Prometheus & Grafana) | Verified | `monitoring/`, backend `/metrics` endpoint |
+| **M10**| Root README.md + Presentation Slides | Verified | `README.md`, `presentation/OpsDesk_Presentation.html` |

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpsDesk — DevOps Capstone Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-cyan: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -15%;
+      left: -10%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -15%;
+      right: -10%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+      filter: blur(80px);
+      z-index: 0;
+    }
+    .slide-container {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justifyContent: center;
+      padding: 40px;
+    }
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.4s ease;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1, h2, h3 {
+      font-family: 'Outfit', sans-serif;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+    .card h4 {
+      font-family: 'Outfit', sans-serif;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+    .card p, .card li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    pre {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: #38bdf8;
+      overflow-x: auto;
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+    .footer-bar {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 40px;
+      border-top: 1px solid var(--border);
+      background: rgba(9, 13, 22, 0.8);
+      backdrop-filter: blur(16px);
+    }
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .btn:hover { background: rgba(255, 255, 255, 0.15); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-container">
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <span class="badge">DevOps Final Capstone Project</span>
+      <h1 style="font-size: 2.8rem; background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        OpsDesk: Enterprise Cloud Incident & SRE Hub
+      </h1>
+      <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 24px;">
+        Production SaaS Architecture from Laptop to Monitored AWS EKS Cluster
+      </p>
+      <div class="grid">
+        <div class="card">
+          <h4>Application Domain</h4>
+          <p>Real-time Incident & SRE Ticket Management with SLA analytics and alert dispatching.</p>
+        </div>
+        <div class="card">
+          <h4>DevOps Stack</h4>
+          <p>FastAPI, React (Glassmorphism), PostgreSQL, Docker, GHCR, GitHub Actions, Trivy, Terraform, EKS, Helm, Prometheus & Grafana.</p>
+        </div>
+        <div class="card">
+          <h4>Evaluation Target</h4>
+          <p>100% completion across all 10 modules (M1 – M10) of the Session 21 Grading Rubric.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <span class="badge">End-to-End Flow</span>
+      <h2>CI/CD & Cloud Infrastructure Lifecycle</h2>
+      <pre>
+Developer -> GitHub (git commit/push)
+  |
+  +-> GitHub Actions Pipeline
+        |-- Pytest Automated Suite (Quality Gate 1)
+        |-- React Frontend Build & Asset Bundle
+        |-- Docker Container Build (Non-root users)
+        |-- Trivy Container Vulnerability Scan (Quality Gate 2)
+        `-- Push Immutable SHA Tags to GitHub Container Registry (GHCR)
+              |
+              v
+        Terraform AWS Infrastructure (VPC across 2 AZs + EKS Cluster + Node Group)
+              |
+              v
+        Helm Kubernetes Deployment (Backend, Frontend, PostgreSQL, Ingress, HPA)
+              |
+              v
+        Observability (Prometheus Scrape /metrics + Grafana Live Dashboards)
+      </pre>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <span class="badge">Module M1 & M2</span>
+      <h2>Application & Testing Excellence</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>FastAPI Backend</h4>
+          <p>High-performance asynchronous Python 3.12 service with SQLAlchemy ORM, Alembic migrations, and 6+ REST endpoints.</p>
+        </div>
+        <div class="card">
+          <h4>Glassmorphism React UI</h4>
+          <p>Modern dark-mode UI with frosted glass cards, ambient glow gradients, KPI counters, and interactive incident modals.</p>
+        </div>
+        <div class="card">
+          <h4>Pytest Test Suite</h4>
+          <p>9 automated test cases covering health, readiness, CRUD operations, and metrics using isolated in-memory SQLite.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+      <span class="badge">Module M4, M5 & M6</span>
+      <h2>Containerization, CI/CD & DevSecOps</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Non-Root Dockerfiles</h4>
+          <p>Backend runs under unprivileged UID 1001. Frontend uses a 2-stage build (Node 20 -> unprivileged Nginx on port 3000).</p>
+        </div>
+        <div class="card">
+          <h4>GitHub Actions Pipeline</h4>
+          <p>Automated workflow running pytest, building frontend, generating Docker images, and publishing with Git SHA tags.</p>
+        </div>
+        <div class="card">
+          <h4>Trivy Security Scanning</h4>
+          <p>Container images are scanned for CRITICAL and HIGH vulnerabilities before registry promotion, fulfilling DevSecOps gates.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+      <span class="badge">Module M7 & M8</span>
+      <h2>Terraform IaC & Kubernetes Orchestration</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>AWS VPC via Terraform</h4>
+          <p>Provisions VPC with 2 public subnets in distinct Availability Zones, internet gateway, route tables, and EKS tagging.</p>
+        </div>
+        <div class="card">
+          <h4>AWS EKS Cluster & Nodes</h4>
+          <p>Kubernetes v1.30 managed cluster with dedicated IAM roles and auto-scaling EC2 node group (2 to 4 instances).</p>
+        </div>
+        <div class="card">
+          <h4>Helm Packaging</h4>
+          <p>Complete chart with 2-replica deployments, ClusterIP services, Ingress routing (/ and /api), and HPA autoscaling.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide">
+      <span class="badge">Module M9 & M10</span>
+      <h2>Observability & Live Demonstration</h2>
+      <div class="grid">
+        <div class="card">
+          <h4>Prometheus Telemetry</h4>
+          <p>Backend exposes machine-readable metrics at `/metrics` scraped every 15s via custom Helm values.</p>
+        </div>
+        <div class="card">
+          <h4>Grafana Live Dashboard</h4>
+          <p>Visualizes request throughput (req/sec), P99 response latency, 5xx error rates, and container CPU usage.</p>
+        </div>
+        <div class="card">
+          <h4>Live Evaluation Script</h4>
+          <p>Demonstrates committing code, automated CI passing, zero-downtime deployment, and incident management in UI.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <div>
+      <span id="slide-num" style="font-weight: 600; color: var(--accent-cyan);">Slide 1 of 6</span>
+      <span style="color: var(--text-muted); margin-left: 12px; font-size: 0.85rem;">(Use ← and → keys to navigate)</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn" onclick="prevSlide()">Previous</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next</button>
+    </div>
+  </div>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const slideNum = document.getElementById('slide-num');
+
+    function update() {
+      slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+      slideNum.textContent = `Slide ${current + 1} of ${slides.length}`;
+    }
+
+    function nextSlide() {
+      if (current < slides.length - 1) { current++; update(); }
+    }
+    function prevSlide() {
+      if (current > 0) { current--; update(); }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+      if (e.key === 'ArrowLeft') prevSlide();
+    });
+  </script>
+</body>
+</html>

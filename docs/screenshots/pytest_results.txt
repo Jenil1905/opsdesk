@@ -1,0 +1,34 @@
+/home/jenil/Desktop/DevOps-Project/backend/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:207: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.4, pluggy-1.7.0 -- /home/jenil/Desktop/DevOps-Project/backend/.venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/jenil/Desktop/DevOps-Project/backend
+configfile: pytest.ini
+plugins: anyio-4.15.1, asyncio-0.25.0
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=None
+collecting ... collected 9 items
+
+backend/tests/test_tickets.py::test_health_check PASSED                  [ 11%]
+backend/tests/test_tickets.py::test_ready_check PASSED                   [ 22%]
+backend/tests/test_tickets.py::test_create_ticket PASSED                 [ 33%]
+backend/tests/test_tickets.py::test_get_tickets_list PASSED              [ 44%]
+backend/tests/test_tickets.py::test_get_single_ticket_and_not_found PASSED [ 55%]
+backend/tests/test_tickets.py::test_update_ticket PASSED                 [ 66%]
+backend/tests/test_tickets.py::test_delete_ticket PASSED                 [ 77%]
+backend/tests/test_tickets.py::test_get_ticket_stats PASSED              [ 88%]
+backend/tests/test_tickets.py::test_metrics_endpoint PASSED              [100%]
+
+=============================== warnings summary ===============================
+backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/jenil/Desktop/DevOps-Project/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+backend/.venv/lib/python3.12/site-packages/pydantic/_internal/_config.py:295
+  /home/jenil/Desktop/DevOps-Project/backend/.venv/lib/python3.12/site-packages/pydantic/_internal/_config.py:295: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+    warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 9 passed, 2 warnings in 0.10s =========================

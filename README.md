@@ -38,7 +38,7 @@ Kubernetes & Helm Orchestration
   ├── Namespace: `opsdesk`
   ├── PostgreSQL 16 Database (ClusterIP: 5432 + Volume Persistence)
   ├── OpsDesk Backend (FastAPI, 2 Replicas, Port 8000, Liveness/Readiness Probes)
-  ├── OpsDesk Frontend (React Glassmorphism, 2 Replicas, Port 3000, Nginx)
+  ├── OpsDesk Frontend (React, 2 Replicas, Port 3000, Nginx)
   ├── Ingress Routing (/ -> Frontend, /api -> Backend)
   └── Horizontal Pod Autoscaler (HPA targeting 75% CPU / 80% RAM)
          │
@@ -50,21 +50,16 @@ Full-Stack Observability
 
 ---
 
-## 2. Visual Demonstration (Glassmorphism Frontend)
+## 2. Visual Demonstration
 
-OpsDesk features a modern **Glassmorphism UI** utilizing CSS backdrop filters (`blur(18px) saturate(190%)`), ambient floating gradient mesh orbs, glowing status indicators, responsive KPI statistics cards, and an interactive incident dispatch modal.
+OpsDesk features a modern UI utilizing CSS backdrop filters (`blur(18px) saturate(190%)`), ambient floating gradient mesh orbs, glowing status indicators, responsive KPI statistics cards, and an interactive incident dispatch modal.
 
-![OpsDesk Glassmorphism Dashboard](docs/screenshots/dashboard_glassmorphism.png)
+![OpsDesk Dashboard](docs/screenshots/dashboard_glassmorphism.png)
 
 ### Swagger REST API Documentation
 Accessible live at `http://localhost:8000/docs` or via Nginx reverse proxy.
 
 ![Swagger API Docs](docs/screenshots/api_docs_swagger.png)
-
-### Project Presentation Slides
-Interactive slide deck built for the final evaluation walkthrough:
-
-![Presentation Slide Deck](docs/screenshots/presentation_slides.png)
 
 ---
 
@@ -72,7 +67,7 @@ Interactive slide deck built for the final evaluation walkthrough:
 
 | Layer | Technologies |
 | :--- | :--- |
-| **Frontend** | React 18, Vite, Vanilla CSS Glassmorphism Design System, Lucide Icons |
+| **Frontend** | React 18, Vite, Vanilla CSS Design System, Lucide Icons |
 | **Backend** | FastAPI (Python 3.12), Pydantic v2, SQLAlchemy 2.0, Psycopg 3 |
 | **Database** | PostgreSQL 16 Alpine, Alembic database migrations |
 | **Testing** | Pytest 8, In-memory SQLite isolated test fixture |
@@ -190,20 +185,3 @@ kubectl get pods -n opsdesk
 kubectl get svc -n opsdesk
 kubectl get ingress -n opsdesk
 ```
-
----
-
-## 9. Final Capstone Submission Checklist (100/100 Points)
-
-| Module | Requirement | Status | Evidence |
-| :--- | :--- | :---: | :--- |
-| **M1** | FastAPI + PostgreSQL + React + 4+ REST APIs + Alembic | Verified | `backend/app/`, `alembic/`, `frontend/`, `docker-compose.yml` |
-| **M2** | Pytest Suite with >= 5 tests covering 3+ endpoints | Verified | 9 passing tests in `backend/tests/test_tickets.py` |
-| **M3** | Git with clean `.gitignore` & >= 10 commits | Verified | Clean Git commit history, proper ignores |
-| **M4** | Multi-stage frontend Dockerfile + Non-root backend | Verified | `frontend/Dockerfile`, `backend/Dockerfile` |
-| **M5** | GitHub Actions CI/CD with Git SHA tags & GHCR | Verified | `.github/workflows/ci.yml` |
-| **M6** | Trivy Container Security Scan in CI | Verified | Trivy scan step auditing HIGH/CRITICAL CVEs |
-| **M7** | Terraform AWS VPC (2 public subnets) + EKS cluster | Verified | `terraform/vpc.tf`, `terraform/eks.tf` |
-| **M8** | Kubernetes Manifests + Helm Chart + Ingress + HPA | Verified | `helm/opsdesk/`, `k8s/namespace.yaml` |
-| **M9** | Observability (/metrics, Prometheus & Grafana) | Verified | `monitoring/`, backend `/metrics` endpoint |
-| **M10**| Root README.md + Presentation Slides | Verified | `README.md`, `presentation/OpsDesk_Presentation.html` |

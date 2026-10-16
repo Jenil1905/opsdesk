@@ -1,0 +1,21 @@
+# Prometheus Helm Configuration for OpsDesk Scraping
+server:
+  global:
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    evaluation_interval: 15s
+
+extraScrapeConfigs: |
+  - job_name: 'opsdesk-backend'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['opsdesk-backend.opsdesk.svc.cluster.local:8000']
+        labels:
+          app: 'opsdesk-backend'
+          environment: 'production'
+
+alertmanager:
+  enabled: true
+
+nodeExporter:
+  enabled: true

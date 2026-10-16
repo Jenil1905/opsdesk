@@ -245,3 +245,11 @@ OpsDesk includes automated SRE telemetry with Prometheus scraping and Grafana da
 
 ![Grafana SRE Dashboard](docs/screenshots/grafana_dashboard.png)
 ![Prometheus Metrics Telemetry](docs/screenshots/m9_metrics_curl.png)
+
+---
+
+## 10. Capstone Presentation
+
+The official presentation deck covering the entire DevOps lifecycle, quality gates, AWS EKS orchestration, and observability evidence is available in the repository:
+
+- 📊 **Slide Deck:** [`presentation/OpsDesk_DevOps_Capstone.pptx`](presentation/OpsDesk_DevOps_Capstone.pptx)

@@ -8,6 +8,10 @@
 
 OpsDesk is an enterprise-grade SaaS incident and site-reliability engineering (SRE) management platform built to showcase a complete DevOps lifecycle from developer workstation to a monitored, auto-scaling AWS EKS Kubernetes cluster.
 
+> 🎬 **Project Deliverables & Demo:**
+> - 🎥 **Demo Video (1080p HD):** [`demo/OpsDesk_Demo_Video.mp4`](demo/OpsDesk_Demo_Video.mp4) (2-minute end-to-end silent walkthrough)
+> - 📊 **Slide Deck:** [`demo/OpsDesk_DevOps_Capstone.pptx`](demo/OpsDesk_DevOps_Capstone.pptx)
+
 ---
 
 ## 1. Architecture Overview
@@ -250,8 +254,8 @@ OpsDesk includes automated SRE telemetry with Prometheus scraping and Grafana da
 
 ## 10. Capstone Presentation & Video Walkthrough
 
-The official presentation deck and 1080p video walkthrough covering the entire DevOps lifecycle, quality gates, AWS EKS orchestration, and observability evidence are available in the repository:
+The official presentation deck and 1080p video walkthrough covering the entire DevOps lifecycle, quality gates, AWS EKS orchestration, and observability evidence are located in the [`demo/`](demo/) directory:
 
-- 📊 **Slide Deck:** [`presentation/OpsDesk_DevOps_Capstone.pptx`](presentation/OpsDesk_DevOps_Capstone.pptx)
-- 🎥 **Demo Walkthrough Video (1080p HD):** [`docs/OpsDesk_Demo_Video.mp4`](docs/OpsDesk_Demo_Video.mp4) (Complete 1m 57s silent architectural & technical walkthrough)
+- 📊 **Slide Deck:** [`demo/OpsDesk_DevOps_Capstone.pptx`](demo/OpsDesk_DevOps_Capstone.pptx)
+- 🎥 **Demo Walkthrough Video (1080p HD):** [`demo/OpsDesk_Demo_Video.mp4`](demo/OpsDesk_Demo_Video.mp4) (Complete 1m 57s silent architectural & technical walkthrough)
 

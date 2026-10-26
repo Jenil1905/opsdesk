@@ -248,8 +248,10 @@ OpsDesk includes automated SRE telemetry with Prometheus scraping and Grafana da
 
 ---
 
-## 10. Capstone Presentation
+## 10. Capstone Presentation & Video Walkthrough
 
-The official presentation deck covering the entire DevOps lifecycle, quality gates, AWS EKS orchestration, and observability evidence is available in the repository:
+The official presentation deck and 1080p video walkthrough covering the entire DevOps lifecycle, quality gates, AWS EKS orchestration, and observability evidence are available in the repository:
 
 - 📊 **Slide Deck:** [`presentation/OpsDesk_DevOps_Capstone.pptx`](presentation/OpsDesk_DevOps_Capstone.pptx)
+- 🎥 **Demo Walkthrough Video (1080p HD):** [`docs/OpsDesk_Demo_Video.mp4`](docs/OpsDesk_Demo_Video.mp4) (Complete 1m 57s silent architectural & technical walkthrough)
+
